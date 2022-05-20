@@ -50,17 +50,17 @@ local function open(opts, on_confirm)
   api.nvim_win_set_cursor(input_win.window, { 1, cursor_col })
   keymap.set({ 'n', 'i', 'v' }, '<cr>', function()
     local lines = api.nvim_buf_get_lines(input_win.buffer, 0, 1, false)
-    on_confirm(lines[1])
+    if on_confirm then
+      on_confirm(lines[1])
+    end
     on_close(input_win.window, prompt_win.window)
   end, { buffer = input_win.buffer })
-  keymap.set({ 'n', 'i', 'v' }, '<esc>', function()
-    on_confirm(nil)
-    on_close(input_win.window, prompt_win.window)
-  end, { buffer = input_win.buffer })
-  api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  api.nvim_create_autocmd({ 'BufLeave', 'InsertLeave' }, {
     buffer = input_win.buffer,
-    callback = function(arg)
-      on_confirm(nil)
+    callback = function()
+      if on_confirm then
+        on_confirm(nil)
+      end
       on_close(input_win.window, prompt_win.window)
     end,
   })

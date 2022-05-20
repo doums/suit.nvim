@@ -14,7 +14,6 @@ local open = require('suit.open').open
 local M = {}
 
 local function input(opts, on_confirm)
-  print(vim.inspect(opts))
   open(opts, on_confirm)
 end
 
