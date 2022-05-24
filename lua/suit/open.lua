@@ -6,7 +6,7 @@ local api = vim.api
 local cmd = vim.cmd
 local keymap = vim.keymap
 
-local _config = require('suit.config').config
+local get_config = require('suit.config').get_config
 
 local function win_opt_append(window, name, hl_group, value)
   local new_value = string.format('%s:%s', hl_group, value)
@@ -20,18 +20,12 @@ end
 local function set_hl(config, input_win, prompt_win)
   local windows = { input = input_win, prompt = prompt_win }
   for k, win in pairs(windows) do
-    --[[ win_opt_append(
-      win.window,
-      'winhighlight',
-      'NormalFloat',
-      config.highlight[k].window
-    ) ]]
     api.nvim_buf_add_highlight(
       win.buffer,
       0,
       config.highlight[k].window,
-      1,
-      1,
+      0,
+      0,
       -1
     )
     win_opt_append(
@@ -56,6 +50,7 @@ local function on_close(input_win, prompt_win)
 end
 
 local function open(opts, on_confirm)
+  local _config = get_config()
   local prompt = opts.prompt or _config.default_prompt
   local input_config = vim.deepcopy(_config.input_win)
   local prompt_config = vim.deepcopy(_config.prompt_win)
@@ -63,13 +58,13 @@ local function open(opts, on_confirm)
   local prompt_win = open_float_win(prompt_config, false)
   input_config.col = api.nvim_win_get_width(prompt_win.window) + 1
   local input_win = open_float_win(input_config, true)
-  set_hl(_config, input_win, prompt_win)
   api.nvim_buf_set_lines(prompt_win.buffer, 0, 1, nil, { prompt })
   local cursor_col = 0
   if opts.default then
     api.nvim_buf_set_lines(input_win.buffer, 0, 1, nil, { opts.default })
     cursor_col = #opts.default + 1
   end
+  set_hl(_config, input_win, prompt_win)
   cmd('startinsert')
   api.nvim_win_set_cursor(input_win.window, { 1, cursor_col })
   keymap.set({ 'n', 'i', 'v' }, '<cr>', function()

@@ -7,11 +7,11 @@ local _config = {
   default_prompt = '→ ',
   highlight = {
     input = {
-      window = 'Constant',
+      window = 'NormalFloat',
       border = 'FloatBorder',
     },
     prompt = {
-      window = 'Constant',
+      window = 'NormalFloat',
       border = 'FloatBorder',
     },
   },
@@ -20,7 +20,7 @@ local _config = {
   input_win = {
     style = 'minimal',
     relative = 'cursor',
-    width = 30,
+    width = 20,
     height = 1,
     zindex = 200,
     row = 1,
@@ -48,5 +48,9 @@ local function init(config)
   end
 end
 
-local M = { config = _config }
+local function get_config()
+  return _config
+end
+
+local M = { get_config = get_config, init = init }
 return M
