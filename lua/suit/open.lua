@@ -50,10 +50,10 @@ local function on_close(input_win, prompt_win)
 end
 
 local function open(opts, on_confirm)
-  local _config = get_config()
-  local prompt = opts.prompt or _config.default_prompt
-  local input_config = vim.deepcopy(_config.input_win)
-  local prompt_config = vim.deepcopy(_config.prompt_win)
+  local config = get_config()
+  local prompt = opts.prompt or config.default_prompt
+  local input_config = vim.deepcopy(config.input_win)
+  local prompt_config = vim.deepcopy(config.prompt_win)
   prompt_config.width = vim.str_utfindex(prompt)
   local prompt_win = open_float_win(prompt_config, false)
   input_config.col = api.nvim_win_get_width(prompt_win.window) + 1
@@ -64,7 +64,7 @@ local function open(opts, on_confirm)
     api.nvim_buf_set_lines(input_win.buffer, 0, 1, nil, { opts.default })
     cursor_col = #opts.default + 1
   end
-  set_hl(_config, input_win, prompt_win)
+  set_hl(config, input_win, prompt_win)
   cmd('startinsert')
   api.nvim_win_set_cursor(input_win.window, { 1, cursor_col })
   keymap.set({ 'n', 'i', 'v' }, '<cr>', function()
