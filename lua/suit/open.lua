@@ -23,7 +23,7 @@ local function set_hl(config, input_win, prompt_win)
     api.nvim_buf_add_highlight(
       win.buffer,
       0,
-      config.highlight[k].window,
+      config[string.format('hl_%s_win', k)],
       0,
       0,
       -1
@@ -31,8 +31,14 @@ local function set_hl(config, input_win, prompt_win)
     win_opt_append(
       win.window,
       'winhighlight',
+      'NormalFloat',
+      config[string.format('hl_%s_win', k)]
+    )
+    win_opt_append(
+      win.window,
+      'winhighlight',
       'FloatBorder',
-      config.highlight[k].border
+      config[string.format('hl_%s_border', k)]
     )
   end
 end

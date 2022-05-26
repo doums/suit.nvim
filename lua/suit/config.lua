@@ -5,16 +5,10 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 -- default configuration
 local _config = {
   default_prompt = '→ ',
-  highlight = {
-    input = {
-      window = 'NormalFloat',
-      border = 'FloatBorder',
-    },
-    prompt = {
-      window = 'NormalFloat',
-      border = 'FloatBorder',
-    },
-  },
+  hl_input_win = 'NormalFloat',
+  hl_input_border = 'FloatBorder',
+  hl_prompt_win = 'NormalFloat',
+  hl_prompt_border = 'FloatBorder',
   -- Options passed to nvim_open_win (:h nvim_open_win())
   -- You can use it to customize various things like border etc.
   input_win = {
