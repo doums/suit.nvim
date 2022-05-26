@@ -1,8 +1,34 @@
---[[ This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
+## suit.nvim
 
--- default configuration
+A [neovim](https://neovim.io/) plugin that replaces the default
+`vim.ui.input` with floating window.
+
+### Install
+
+Use your plugin manager
+
+```lua
+require('paq')({
+  -- ...
+  'doums/suit.nvim',
+})
+```
+
+### Configuration
+
+```lua
+require('suit').setup({
+  hl_prompt_win = 'suitPrompt',
+  hl_prompt_border = 'suitPrompt',
+  hl_input_win = 'suitInput',
+  hl_input_border = 'suitInput',
+})
+```
+
+All default values are listed
+[here](https://github.com/doums/suit.nvim/blob/main/lua/suit/config.lua).
+
+```lua
 local _config = {
   default_prompt = '→ ',
   -- highlight group to use for input window
@@ -36,16 +62,8 @@ local _config = {
     focusable = false,
   },
 }
+```
 
-local function init(config)
-  if config then
-    _config = vim.tbl_deep_extend('force', _config, config)
-  end
-end
+### License
 
-local function get_config()
-  return _config
-end
-
-local M = { get_config = get_config, init = init }
-return M
+Mozilla Public License 2.0
