@@ -50,8 +50,12 @@ local function open_float_win(config, enter)
 end
 
 local function on_close(input_win, prompt_win)
-  api.nvim_win_close(input_win, true)
-  api.nvim_win_close(prompt_win, true)
+  if api.nvim_win_is_valid(input_win) then
+    api.nvim_win_close(input_win, true)
+  end
+  if api.nvim_win_is_valid(prompt_win) then
+    api.nvim_win_close(prompt_win, true)
+  end
   cmd('stopinsert')
 end
 
