@@ -31,9 +31,6 @@ local _config = {
     border = { '', '', '', '', '', '', '', ' ' },
     focusable = false,
   },
-  -- Some mapping, exit: close the job and the window, normal:
-  -- switch to normal mode
-  keymaps = { cancel = '<A-q>', normal = '<A-n>' },
 }
 
 local function init(config)
