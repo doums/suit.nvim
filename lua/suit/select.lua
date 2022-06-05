@@ -8,6 +8,8 @@ local keymap = vim.keymap
 
 local get_config = require('suit.config').get_config
 
+local nvim_default_prompt = 'Input:'
+
 local function win_opt_append(window, name, hl_group, value)
   local new_value = string.format('%s:%s', hl_group, value)
   local opt = api.nvim_win_get_option(window, name)
@@ -60,8 +62,11 @@ local function on_close(input_win, prompt_win)
 end
 
 local function open(opts, on_confirm)
-  local config = get_config()
+  local config = get_config().input
   local prompt = opts.prompt or config.default_prompt
+  if prompt == nvim_default_prompt then
+    prompt = config.default_prompt
+  end
   local input_config = vim.deepcopy(config.input_win)
   local prompt_config = vim.deepcopy(config.prompt_win)
   prompt_config.width = vim.str_utfindex(prompt)
