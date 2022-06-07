@@ -5,13 +5,13 @@ file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
 local api = vim.api
 local cmd = vim.cmd
 
-local function win_opt_append(window, name, hl_group, value)
+local function win_hl_override(window, hl_group, value)
   local new_value = string.format('%s:%s', hl_group, value)
-  local opt = api.nvim_win_get_option(window, name)
+  local opt = api.nvim_win_get_option(window, 'winhighlight')
   if #opt > 0 then
     new_value = string.format('%s,%s', opt, new_value)
   end
-  api.nvim_win_set_option(window, name, new_value)
+  api.nvim_win_set_option(window, 'winhighlight', new_value)
 end
 
 local function set_hl(config, windows)
@@ -24,15 +24,13 @@ local function set_hl(config, windows)
       0,
       -1
     )
-    win_opt_append(
+    win_hl_override(
       win.window,
-      'winhighlight',
       'NormalFloat',
       config[string.format('hl_%s_win', k)]
     )
-    win_opt_append(
+    win_hl_override(
       win.window,
-      'winhighlight',
       'FloatBorder',
       config[string.format('hl_%s_border', k)]
     )
@@ -68,7 +66,7 @@ local function close_windows(windows)
 end
 
 local M = {
-  win_opt_append = win_opt_append,
+  win_hl_override = win_hl_override,
   set_hl = set_hl,
   open_float_win = open_float_win,
   close_windows = close_windows,

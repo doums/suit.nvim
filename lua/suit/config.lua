@@ -49,6 +49,8 @@ local _config = {
     hl_prompt_win = 'NormalFloat',
     -- highlight group to use for prompt border
     hl_prompt_border = 'FloatBorder',
+    -- highlight group to use for current selected item
+    hl_selected_item = 'PmenuSel',
     -- Options passed to nvim_open_win (:h nvim_open_win())
     -- You can use it to customize various things like border etc.
     select_win = {
