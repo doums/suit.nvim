@@ -1,7 +1,8 @@
 ## suit.nvim
 
 A [neovim](https://neovim.io/) plugin that replaces the default
-`vim.ui.input` and `vim.ui.select` with floating window.
+`vim.ui.input` and `vim.ui.select` implementations with floating
+windows.
 
 ### Install
 
