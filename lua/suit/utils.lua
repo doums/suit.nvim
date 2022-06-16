@@ -19,7 +19,7 @@ local function set_hl(config, windows)
     api.nvim_buf_add_highlight(
       win.buffer,
       0,
-      config[string.format('hl_%s_win', k)],
+      config[string.format('hl_%s', k)],
       0,
       0,
       -1
@@ -27,13 +27,9 @@ local function set_hl(config, windows)
     win_hl_override(
       win.window,
       'NormalFloat',
-      config[string.format('hl_%s_win', k)]
+      config[string.format('hl_%s', k)]
     )
-    win_hl_override(
-      win.window,
-      'FloatBorder',
-      config[string.format('hl_%s_border', k)]
-    )
+    win_hl_override(win.window, 'FloatBorder', config.hl_border)
   end
 end
 

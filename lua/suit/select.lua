@@ -6,6 +6,7 @@ local api = vim.api
 local keymap = vim.keymap
 
 local get_config = require('suit.config').get_config
+local win_cfg = require('suit.config').win_config
 local utils = require('suit.utils')
 
 local function get_max_width(items, prompt)
@@ -43,14 +44,25 @@ local function format_items(items, format_fn, prompt)
   }
 end
 
+local function get_offset(border)
+  if border == 'none' or not border then
+    return 0
+  end
+  if type(border) == 'table' and #border[1] > 0 then
+    return 1
+  end
+  return 0
+end
+
 local function open(raw_items, opts, on_choice)
   local config = get_config().select
   local prompt = opts.prompt or config.default_prompt
-  local select_config = vim.deepcopy(config.select_win)
-  local prompt_config = vim.deepcopy(config.prompt_win)
+  local select_config = vim.deepcopy(win_cfg.select.select)
+  local prompt_config = vim.deepcopy(win_cfg.select.prompt)
   local items, width = unpack(format_items(raw_items, opts.format_item, prompt))
   select_config.width = width
   select_config.height = #items
+  select_config.row = 2 + get_offset(prompt_config.border)
   prompt_config.width = width
   local prompt_win = utils.open_float_win(
     prompt_config,
@@ -70,7 +82,6 @@ local function open(raw_items, opts, on_choice)
   keymap.set({ 'n', 'v' }, '<cr>', function()
     if on_choice then
       local row = unpack(api.nvim_win_get_cursor(select_win.window))
-      print(string.format('%s - %s', row, items[row]))
       on_choice(raw_items[row], row)
     end
     utils.close_windows({ select_win.window, prompt_win.window })
