@@ -64,12 +64,8 @@ local function open(raw_items, opts, on_choice)
   select_config.height = #items
   select_config.row = 2 + get_offset(prompt_config.border)
   prompt_config.width = width
-  local prompt_win = utils.open_float_win(
-    prompt_config,
-    { prompt },
-    false,
-    true
-  )
+  local prompt_win =
+  utils.open_float_win(prompt_config, { prompt }, false, true)
   local select_win = utils.open_float_win(select_config, items, true, true)
   api.nvim_win_set_option(select_win.window, 'scrolloff', 0)
   utils.set_hl(config, { select = select_win, prompt = prompt_win })
@@ -82,9 +78,11 @@ local function open(raw_items, opts, on_choice)
   keymap.set({ 'n', 'v' }, '<cr>', function()
     if on_choice then
       local row = unpack(api.nvim_win_get_cursor(select_win.window))
+      utils.close_windows({ select_win.window, prompt_win.window })
       on_choice(raw_items[row], row)
+    else
+      utils.close_windows({ select_win.window, prompt_win.window })
     end
-    utils.close_windows({ select_win.window, prompt_win.window })
   end, { buffer = select_win.buffer })
   keymap.set({ 'n', 'v' }, '<esc>', function()
     if on_choice then
