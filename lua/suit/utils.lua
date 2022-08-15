@@ -61,10 +61,16 @@ local function close_windows(windows)
   cmd('stopinsert')
 end
 
+local function is_visual(mode)
+  local visual_modes = { 'v', 'V', '\22' }
+  return vim.tbl_contains(visual_modes, mode)
+end
+
 local M = {
   win_hl_override = win_hl_override,
   set_hl = set_hl,
   open_float_win = open_float_win,
   close_windows = close_windows,
+  is_visual = is_visual,
 }
 return M

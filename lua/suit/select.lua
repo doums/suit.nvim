@@ -64,6 +64,7 @@ local function open(raw_items, opts, on_choice)
   select_config.height = #items
   select_config.row = 2 + get_offset(prompt_config.border)
   prompt_config.width = width
+  local prev_mode = api.nvim_get_mode().mode
   local prompt_win =
   utils.open_float_win(prompt_config, { prompt }, false, true)
   local select_win = utils.open_float_win(select_config, items, true, true)
@@ -78,6 +79,10 @@ local function open(raw_items, opts, on_choice)
   keymap.set({ 'n', 'v' }, '<cr>', function()
     if on_choice then
       local row = unpack(api.nvim_win_get_cursor(select_win.window))
+      -- restore previous mode and selection
+      if utils.is_visual(prev_mode) then
+        api.nvim_feedkeys('gv', 'n', false)
+      end
       utils.close_windows({ select_win.window, prompt_win.window })
       on_choice(raw_items[row], row)
     else
