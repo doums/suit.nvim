@@ -14,28 +14,26 @@ local function win_hl_override(window, hl_group, value)
   api.nvim_win_set_option(window, 'winhighlight', new_value)
 end
 
-local function set_hl(config, windows)
-  for k, win in pairs(windows) do
-    api.nvim_buf_add_highlight(
-      win.buffer,
-      0,
-      config[string.format('hl_%s', k)],
-      0,
-      0,
-      -1
-    )
-    win_hl_override(
-      win.window,
-      'NormalFloat',
-      config[string.format('hl_%s', k)]
-    )
-    win_hl_override(win.window, 'FloatBorder', config.hl_border)
-  end
+local function set_hl(config, win, hl_name)
+  api.nvim_buf_add_highlight(
+    win.buffer,
+    0,
+    config[string.format('hl_%s', hl_name)],
+    0,
+    0,
+    -1
+  )
+  win_hl_override(
+    win.window,
+    'NormalFloat',
+    config[string.format('hl_%s', hl_name)]
+  )
+  win_hl_override(win.window, 'FloatBorder', config.hl_border)
 end
 
-local function open_float_win(config, lines, enter, lock)
+local function open_float_win(config, lines, lock)
   local buffer = api.nvim_create_buf(false, true)
-  local window = api.nvim_open_win(buffer, enter, config)
+  local window = api.nvim_open_win(buffer, true, config)
   -- nvim_buf_set_lines creates an empty line at the end, due to
   -- that use nvim_buf_set_text to write the last line item
   if #lines == 1 then
@@ -52,11 +50,9 @@ local function open_float_win(config, lines, enter, lock)
   return { buffer = buffer, window = window }
 end
 
-local function close_windows(windows)
-  for _, win in ipairs(windows) do
-    if api.nvim_win_is_valid(win) then
-      api.nvim_win_close(win, true)
-    end
+local function close_window(win)
+  if api.nvim_win_is_valid(win) then
+    api.nvim_win_close(win, true)
   end
   cmd('stopinsert')
 end
@@ -70,7 +66,7 @@ local M = {
   win_hl_override = win_hl_override,
   set_hl = set_hl,
   open_float_win = open_float_win,
-  close_windows = close_windows,
+  close_window = close_window,
   is_visual = is_visual,
 }
 return M

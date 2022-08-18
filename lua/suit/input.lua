@@ -23,24 +23,11 @@ end
 local function open(opts, on_confirm)
   local config = get_config().input
   local prompt = opts.prompt or config.default_prompt
-  local input_config = vim.deepcopy(win_cfg.input.input)
-  local prompt_config = vim.deepcopy(win_cfg.input.prompt)
-  prompt_config.width = math.max(vim.str_utfindex(prompt), 1)
-  local prompt_win = utils.open_float_win(
-    prompt_config,
-    { prompt },
-    false,
-    true
-  )
-  input_config.col = api.nvim_win_get_width(prompt_win.window)
-      + get_offset(prompt_config.border)
-  local input_win = utils.open_float_win(
-    input_config,
-    { opts.default or nil },
-    true
-  )
+  local input_config = vim.deepcopy(win_cfg.input)
+  local input_win = utils.open_float_win(input_config, { opts.default or nil })
+  vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   local cursor_col = opts.default and vim.str_utfindex(opts.default) + 1 or 0
-  utils.set_hl(config, { input = input_win, prompt = prompt_win })
+  utils.set_hl(config, input_win, 'input')
   cmd('startinsert')
   api.nvim_win_set_cursor(input_win.window, { 1, cursor_col })
   keymap.set({ 'n', 'i', 'v' }, '<cr>', function()
@@ -48,7 +35,7 @@ local function open(opts, on_confirm)
     if on_confirm then
       on_confirm(lines[1])
     end
-    utils.close_windows({ input_win.window, prompt_win.window })
+    utils.close_window(input_win.window)
   end, { buffer = input_win.buffer })
   api.nvim_create_autocmd({ 'BufLeave', 'InsertLeave' }, {
     buffer = input_win.buffer,
@@ -56,7 +43,7 @@ local function open(opts, on_confirm)
       if on_confirm then
         on_confirm(nil)
       end
-      utils.close_windows({ input_win.window, prompt_win.window })
+      utils.close_window(input_win.window)
     end,
   })
 end
