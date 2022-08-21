@@ -32,6 +32,8 @@ require('suit').setup({
     hl_border = 'FloatBorder',
     -- input width (in addition to the default value)
     width = 20,
+    -- override arguments passed to `nvim_open_win` (see `:h nvim_open_win`)
+    nvim_float_api = nil,
   },
   select = {
     -- default prompt value
@@ -46,6 +48,8 @@ require('suit').setup({
     hl_selected_item = 'PmenuSel',
     -- highlight group for window border
     hl_border = 'FloatBorder',
+    -- override arguments passed to `nvim_open_win` (see `:h nvim_open_win`)
+    nvim_float_api = nil,
   },
 })
 ```

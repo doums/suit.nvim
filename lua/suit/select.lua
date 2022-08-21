@@ -47,12 +47,12 @@ end
 local function open(raw_items, opts, on_choice)
   local config = get_config().select
   local prompt = opts.prompt or config.default_prompt
-  local select_config = vim.deepcopy(win_cfg.select)
+  local win_config = vim.deepcopy(win_cfg.select)
   local items, width = unpack(format_items(raw_items, opts.format_item, prompt))
-  select_config.width = width
-  select_config.height = #items + 1
+  win_config.width = width
+  win_config.height = #items + 1
   local prev_mode = api.nvim_get_mode().mode
-  local select_win = utils.open_float_win(select_config, items, true)
+  local select_win = utils.open_float_win(win_config, items, true)
   vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   vim.wo.scrolloff = 0
   utils.set_hl(config, select_win, 'select')
