@@ -10,23 +10,18 @@ local get_config = require('suit.config').get_config
 local win_cfg = require('suit.config').win_config
 local utils = require('suit.utils')
 
-local function get_offset(border)
-  if border == 'none' or not border then
-    return 0
-  end
-  if type(border) == 'table' and #border[8] > 0 then
-    return 1
-  end
-  return 0
-end
-
 local function open(opts, on_confirm)
   local config = get_config().input
   local prompt = opts.prompt or config.default_prompt
   local input_config = vim.deepcopy(win_cfg.input)
+  local default_value_width = opts.default and vim.str_utfindex(opts.default) or 0
+  local input_width = input_config.width + default_value_width
+  local prompt_width = vim.str_utfindex(prompt)
+  input_config.width = input_width > prompt_width and input_width
+    or prompt_width
   local input_win = utils.open_float_win(input_config, { opts.default or nil })
   vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
-  local cursor_col = opts.default and vim.str_utfindex(opts.default) + 1 or 0
+  local cursor_col = opts.default and default_value_width + 1 or 0
   utils.set_hl(config, input_win, 'input')
   cmd('startinsert')
   api.nvim_win_set_cursor(input_win.window, { 1, cursor_col })

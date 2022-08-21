@@ -17,6 +17,8 @@ local _config = {
     hl_prompt = 'NormalFloat',
     -- highlight group for window border
     hl_border = 'FloatBorder',
+    -- input width (in addition to the default value)
+    width = 20,
   },
   select = {
     -- default prompt value
