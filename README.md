@@ -57,6 +57,21 @@ require('suit').setup({
 All default configuration values are listed
 [here](https://github.com/doums/suit.nvim/blob/main/lua/suit/config.lua).
 
+### Usage
+
+Keymaps should be intuitive.
+
+For input:
+
+`<cr>` to confirm\
+`<esc>` to cancel
+
+For select:
+
+`<cr>` to confirm the selected item\
+`<esc>`, `q` to cancel\
+`j`, `k`, `<up>`, `<down>` to navigate
+
 ### License
 
 Mozilla Public License 2.0
