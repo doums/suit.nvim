@@ -64,23 +64,22 @@ local win_config = {
 }
 
 local function init(config)
-  if config then
-    _config = vim.tbl_deep_extend('force', _config, config)
-  end
+  _config = vim.tbl_deep_extend('force', _config, config or {})
+
   win_config.input.border = border_factory(_config.input.border)
   win_config.select.border = border_factory(_config.select.border)
-  if config.input.nvim_float_api then
+  if _config.input.nvim_float_api then
     win_config.input = vim.tbl_deep_extend(
       'force',
       win_config.input,
-      config.input.nvim_float_api
+      _config.input.nvim_float_api
     )
   end
-  if config.select.nvim_float_api then
+  if _config.select.nvim_float_api then
     win_config.select = vim.tbl_deep_extend(
       'force',
       win_config.select,
-      config.select.nvim_float_api
+      _config.select.nvim_float_api
     )
   end
 end
