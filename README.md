@@ -68,7 +68,7 @@ For input:
 
 For select:
 
-`<cr>` to confirm the selected item\
+`<cr>` and left mouse double click to confirm the selected item\
 `<esc>`, `q` to cancel\
 `j`, `k`, `<up>`, `<down>` to navigate
 

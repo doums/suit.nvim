@@ -62,7 +62,7 @@ local function open(raw_items, opts, on_choice)
   api.nvim_win_set_cursor(select_win.window, { 1, 0 })
   keymap.set({ 'n', 'v' }, '<up>', '<up>', { buffer = select_win.buffer })
   keymap.set({ 'n', 'v' }, '<down>', '<down>', { buffer = select_win.buffer })
-  keymap.set({ 'n', 'v' }, '<cr>', function()
+  local function on_item_select()
     if on_choice then
       local row = unpack(api.nvim_win_get_cursor(select_win.window))
       -- restore previous mode and selection
@@ -74,7 +74,19 @@ local function open(raw_items, opts, on_choice)
     else
       utils.close_window(select_win.window)
     end
-  end, { buffer = select_win.buffer })
+  end
+  keymap.set(
+    { 'n', 'v' },
+    '<cr>',
+    on_item_select,
+    { buffer = select_win.buffer }
+  )
+  keymap.set(
+    { 'n', 'v' },
+    '<2-LeftMouse>',
+    on_item_select,
+    { buffer = select_win.buffer }
+  )
   keymap.set({ 'n', 'v' }, '<esc>', function()
     if on_choice then
       on_choice(nil, nil)

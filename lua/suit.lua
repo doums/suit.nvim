@@ -13,7 +13,7 @@ local function input(opts, on_confirm)
 end
 
 local function select(items, opts, on_choice)
-  if #items == 0 then
+  if not items or #items == 0 then
     return
   end
   select_open(items, opts or {}, on_choice)
