@@ -47,6 +47,7 @@ local function open_float_win(config, lines, lock)
   if lock then
     api.nvim_buf_set_option(buffer, 'modifiable', false)
   end
+  api.nvim_buf_set_option(buffer, 'filetype', 'suitui')
   return { buffer = buffer, window = window }
 end
 
