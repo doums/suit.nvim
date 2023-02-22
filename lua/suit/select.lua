@@ -1,12 +1,10 @@
---[[ This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this
-file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
+-- This Source Code Form is subject to the terms of the Mozilla Public
+-- License, v. 2.0. If a copy of the MPL was not distributed with this
+-- file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 local api = vim.api
-local keymap = vim.keymap
 
 local get_config = require('suit.config').get_config
-local win_cfg = require('suit.config').win_config
 local utils = require('suit.utils')
 
 local function get_max_width(items, prompt)
@@ -47,7 +45,7 @@ end
 local function open(raw_items, opts, on_choice)
   local config = get_config().select
   local prompt = opts.prompt or config.default_prompt
-  local win_config = vim.deepcopy(win_cfg.select)
+  local win_config = vim.deepcopy(config.win_config)
   local items, width = unpack(format_items(raw_items, opts.format_item, prompt))
   win_config.width = width
   win_config.height = #items + 1
@@ -55,13 +53,18 @@ local function open(raw_items, opts, on_choice)
   local select_win = utils.open_float_win(win_config, items, true)
   vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   vim.wo.scrolloff = 0
-  utils.set_hl(config, select_win, 'select')
+  utils.set_hl(config, select_win)
   -- overriding Cursor highlight group seems forbidden and throws
   -- an error
   -- utils.win_hl_override(select_win.window, 'Cursor', config.hl_selected_item)
   api.nvim_win_set_cursor(select_win.window, { 1, 0 })
-  keymap.set({ 'n', 'v' }, '<up>', '<up>', { buffer = select_win.buffer })
-  keymap.set({ 'n', 'v' }, '<down>', '<down>', { buffer = select_win.buffer })
+  vim.keymap.set({ 'n', 'v' }, '<up>', '<up>', { buffer = select_win.buffer })
+  vim.keymap.set(
+    { 'n', 'v' },
+    '<down>',
+    '<down>',
+    { buffer = select_win.buffer }
+  )
   local function on_item_select()
     if on_choice then
       local row = unpack(api.nvim_win_get_cursor(select_win.window))
@@ -75,25 +78,25 @@ local function open(raw_items, opts, on_choice)
       utils.close_window(select_win.window)
     end
   end
-  keymap.set(
+  vim.keymap.set(
     { 'n', 'v' },
     '<cr>',
     on_item_select,
     { buffer = select_win.buffer }
   )
-  keymap.set(
+  vim.keymap.set(
     { 'n', 'v' },
     '<2-LeftMouse>',
     on_item_select,
     { buffer = select_win.buffer }
   )
-  keymap.set({ 'n', 'v' }, '<esc>', function()
+  vim.keymap.set({ 'n', 'v' }, '<esc>', function()
     if on_choice then
       on_choice(nil, nil)
     end
     utils.close_window(select_win.window)
   end, { buffer = select_win.buffer })
-  keymap.set({ 'n', 'v' }, 'q', function()
+  vim.keymap.set({ 'n', 'v' }, 'q', function()
     if on_choice then
       on_choice(nil, nil)
     end
@@ -117,7 +120,7 @@ local function open(raw_items, opts, on_choice)
       api.nvim_buf_add_highlight(
         select_win.buffer,
         ns_id,
-        config.hl_selected_item,
+        config.hl_sel,
         row,
         0,
         -1
