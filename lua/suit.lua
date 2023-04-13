@@ -5,7 +5,7 @@
 local input_open = require('suit.input').open
 local select_open = require('suit.select').open
 local init_config = require('suit.config').init
-local hl_exists = require('dmap.utils').hl_exists
+local hl_exists = require('suit.utils').hl_exists
 
 local M = {}
 
