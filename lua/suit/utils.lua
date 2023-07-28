@@ -7,11 +7,11 @@ local cmd = vim.cmd
 
 local function win_hl_override(window, hl_group, value)
   local new_value = string.format('%s:%s', hl_group, value)
-  local opt = api.nvim_win_get_option(window, 'winhighlight')
+  local opt = api.nvim_get_option_value('winhighlight', { win = window })
   if #opt > 0 then
     new_value = string.format('%s,%s', opt, new_value)
   end
-  api.nvim_win_set_option(window, 'winhighlight', new_value)
+  api.nvim_set_option_value('winhighlight', new_value, { win = window })
 end
 
 local function hl_exists(name)
