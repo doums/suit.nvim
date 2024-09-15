@@ -22,17 +22,20 @@ local function open(opts, on_confirm)
   utils.set_hl(config, win)
   vim.cmd('startinsert')
   api.nvim_win_set_cursor(win.window, { 1, cursor_col })
+  local confirmed = false
   vim.keymap.set({ 'n', 'i', 'v' }, '<cr>', function()
     local lines = api.nvim_buf_get_lines(win.buffer, 0, 1, false)
     if on_confirm then
+      confirmed = true
       on_confirm(lines[1])
+      return
     end
     utils.close_window(win.window)
   end, { buffer = win.buffer })
   api.nvim_create_autocmd({ 'BufLeave', 'InsertLeave' }, {
     buffer = win.buffer,
     callback = function()
-      if on_confirm then
+      if on_confirm and not confirmed then
         on_confirm(nil)
       end
       utils.close_window(win.window)
