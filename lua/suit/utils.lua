@@ -18,8 +18,8 @@ local function hl_exists(name)
   return not vim.tbl_isempty(vim.api.nvim_get_hl(0, { name = name }))
 end
 
-local function set_hl(config, win)
-  api.nvim_buf_add_highlight(win.buffer, 0, config.hl_win, 0, 0, -1)
+local function set_hl(ns, config, win)
+  vim.hl.range(win.buffer, ns, config.hl_win, { 0, 0 }, { 0, -1 })
   win_hl_override(win.window, 'NormalFloat', config.hl_win)
   win_hl_override(win.window, 'FloatBorder', config.hl_border)
 end
@@ -34,7 +34,7 @@ local function open_float_win(config, lines, lock)
   else
     local copy = vim.deepcopy(lines)
     local last = table.remove(copy)
-    api.nvim_buf_set_lines(buffer, 0, 0, nil, copy)
+    api.nvim_buf_set_lines(buffer, 0, 0, false, copy)
     api.nvim_buf_set_text(buffer, #copy, 0, #copy, 0, { last })
   end
   if lock then

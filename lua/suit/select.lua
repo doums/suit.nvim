@@ -53,7 +53,7 @@ local function open(raw_items, opts, on_choice)
   local select_win = utils.open_float_win(win_config, items, true)
   vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   vim.wo.scrolloff = 0
-  utils.set_hl(config, select_win)
+  utils.set_hl(api.nvim_create_namespace(''), config, select_win)
   -- overriding Cursor highlight group seems forbidden and throws
   -- an error
   -- utils.win_hl_override(select_win.window, 'Cursor', config.hl_selected_item)
@@ -117,13 +117,12 @@ local function open(raw_items, opts, on_choice)
     callback = function()
       api.nvim_buf_clear_namespace(select_win.buffer, ns_id, 0, -1)
       local row = unpack(api.nvim_win_get_cursor(select_win.window)) - 1
-      api.nvim_buf_add_highlight(
+      vim.hl.range(
         select_win.buffer,
         ns_id,
         config.hl_sel,
-        row,
-        0,
-        -1
+        { row, 0 },
+        { row, -1 }
       )
     end,
   })

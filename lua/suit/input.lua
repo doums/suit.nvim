@@ -19,7 +19,7 @@ local function open(opts, on_confirm)
   local win = utils.open_float_win(win_config, { opts.default or nil })
   vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   local cursor_col = opts.default and default_value_width + 1 or 0
-  utils.set_hl(config, win)
+  utils.set_hl(api.nvim_create_namespace(''), config, win)
   vim.cmd('startinsert')
   api.nvim_win_set_cursor(win.window, { 1, cursor_col })
   local confirmed = false
