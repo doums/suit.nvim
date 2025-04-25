@@ -48,10 +48,10 @@ local function open(raw_items, opts, on_choice)
   local win_config = vim.deepcopy(config.win_config)
   local items, width = unpack(format_items(raw_items, opts.format_item, prompt))
   win_config.width = width
-  win_config.height = #items + 1
+  win_config.height = #items
+  win_config.title = { { prompt, 'suitPrompt' } }
   local prev_mode = api.nvim_get_mode().mode
   local select_win = utils.open_float_win(win_config, items, true)
-  vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   vim.wo.scrolloff = 0
   utils.set_hl(api.nvim_create_namespace(''), config, select_win)
   -- overriding Cursor highlight group seems forbidden and throws

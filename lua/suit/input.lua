@@ -16,8 +16,8 @@ local function open(opts, on_confirm)
   local input_width = win_config.width + default_value_width
   local prompt_width = vim.str_utfindex(prompt)
   win_config.width = input_width > prompt_width and input_width or prompt_width
+  win_config.title = { { prompt, 'suitPrompt' } }
   local win = utils.open_float_win(win_config, { opts.default or nil })
-  vim.wo.winbar = string.format('%%#%s#%s', config.hl_prompt, prompt)
   local cursor_col = opts.default and default_value_width + 1 or 0
   utils.set_hl(api.nvim_create_namespace(''), config, win)
   vim.cmd('startinsert')

@@ -23,12 +23,12 @@ end
 local function init_hl(config)
   local input_default_hls = {
     hl_win = 'NormalFloat',
-    hl_prompt = 'NormalFloat',
+    hl_prompt = 'FloatTitle',
     hl_border = 'FloatBorder',
   }
   local select_default_hls = {
     hl_win = 'NormalFloat',
-    hl_prompt = 'NormalFloat',
+    hl_prompt = 'FloatTitle',
     hl_sel = 'PmenuSel',
     hl_border = 'FloatBorder',
   }

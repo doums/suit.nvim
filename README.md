@@ -6,63 +6,68 @@ windows.
 
 ### Install
 
-Use your plugin manager
+Use your plugin manager, eg. with `lazy.nvim`
 
 ```lua
-require('paq')({
-  -- ...
+{
   'doums/suit.nvim',
-})
+  event = 'VeryLazy',
+  opts = {
+    -- your optional config
+  }
+}
 ```
 
 ### Configuration
 
+Configuration is optional.\
+This is the default config:
+
 ```lua
-require('suit').setup({
+{
   input = {
     -- default prompt value
-    default_prompt = 'Input: ',
-    -- border of the window (see `:h nvim_open_win`)
-    border = 'single',
+    default_prompt = 'Input',
+    -- border of the window, defaults to `vim.o.winborder` (:h winborder)
+    -- border = 'single',
     -- highlight group for the input UI window
     -- links to NormalFloat
     hl_win = 'suitWin',
     -- highlight group for the prompt text
-    -- links to NormalFloat
+    -- links to FloatTitle
     hl_prompt = 'suitPrompt',
+    -- prompt position, left | center | right
+    prompt_pos = 'left',
     -- highlight group for the window border
     -- links to FloatBorder
     hl_border = 'suitBorder',
     -- input width (in addition to the default value)
     width = 20,
-    -- override arguments passed to `nvim_open_win` (see `:h nvim_open_win`)
-    nvim_float_api = nil,
   },
   select = {
     -- default prompt value
-    default_prompt = 'Select one of: ',
-    -- border of the window (see `:h nvim_open_win`)
-    border = 'single',
+    default_prompt = 'Select',
+    -- border of the window, defaults to `vim.o.winborder` (:h winborder)
+    -- border = 'single',
     -- highlight group for the select UI window
     -- links to NormalFloat
     hl_win = 'suitWin',
     -- highlight group for the prompt text
-    -- links to NormalFloat
+    -- links to FloatTitle
     hl_prompt = 'suitPrompt',
+    -- prompt position, left | center | right
+    prompt_pos = 'left',
     -- highlight group for the selected item
     -- links to PmenuSel
     hl_sel = 'suitSel',
     -- highlight group for the window border
     -- links to FloatBorder
     hl_border = 'suitBorder',
-    -- override arguments passed to `nvim_open_win` (see `:h nvim_open_win`)
-    nvim_float_api = nil,
   },
-})
+}
 ```
 
-All default configuration values are listed
-[here](https://github.com/doums/suit.nvim/blob/main/lua/suit/config.lua).
+[ref](https://github.com/doums/suit.nvim/blob/main/lua/suit/config.lua).
 
 ### Usage
 
