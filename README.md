@@ -1,8 +1,7 @@
 ## suit.nvim
 
-A [neovim](https://neovim.io/) plugin that replaces the default
-`vim.ui.input` and `vim.ui.select` implementations with floating
-windows.
+A neovim plugin that provides implementation of `vim.ui.input`
+and `vim.ui.select` using **floating windows**
 
 ### Install
 
@@ -30,39 +29,20 @@ This is the default config:
     default_prompt = 'Input',
     -- border of the window, defaults to `vim.o.winborder` (:h winborder)
     -- border = 'single',
-    -- highlight group for the input UI window
-    -- links to NormalFloat
-    hl_win = 'suitWin',
-    -- highlight group for the prompt text
-    -- links to FloatTitle
-    hl_prompt = 'suitPrompt',
     -- prompt position, left | center | right
     prompt_pos = 'left',
-    -- highlight group for the window border
-    -- links to FloatBorder
-    hl_border = 'suitBorder',
     -- input width (in addition to the default value)
     width = 20,
+    max_width = 50,
   },
   select = {
     -- default prompt value
     default_prompt = 'Select',
     -- border of the window, defaults to `vim.o.winborder` (:h winborder)
     -- border = 'single',
-    -- highlight group for the select UI window
-    -- links to NormalFloat
-    hl_win = 'suitWin',
-    -- highlight group for the prompt text
-    -- links to FloatTitle
-    hl_prompt = 'suitPrompt',
     -- prompt position, left | center | right
     prompt_pos = 'left',
-    -- highlight group for the selected item
-    -- links to PmenuSel
-    hl_sel = 'suitSel',
-    -- highlight group for the window border
-    -- links to FloatBorder
-    hl_border = 'suitBorder',
+    max_width = 40,
   },
 }
 ```
@@ -83,6 +63,13 @@ For select:
 `<cr>` and left mouse double click to confirm the selected item\
 `<esc>`, `q` to cancel\
 `j`, `k`, `<up>`, `<down>` to navigate
+
+### Highlight
+
+- `suitWin` input/select window, default: links to `NormalFloat`
+- `suitBorder` window border, default: links to `FloatBorder`
+- `suitPrompt` prompt text (window title), default: links to `FloatTitle`
+- `suitSel` selected item, default: links to `PmenuSel`
 
 ### License
 
